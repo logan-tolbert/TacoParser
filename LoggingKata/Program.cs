@@ -7,19 +7,34 @@ namespace LoggingKata
 {
     class Program
     {
+       
         static readonly ILog logger = new TacoLogger();
         const string csvPath = "TacoBell-US-AL.csv";
 
         static void Main(string[] args)
         {
-           
-            logger.LogInfo("Log initialized");
+            const double milePerMeter = 0.00062137;
+            string divider = new string('-', 26);
 
-            // Optional: Log an error if you get 0 lines and a warning if you get 1 line
+            #region App Introduction
+            Console.WriteLine
+               (
+                "{0, 33}",
+                "Welcome to TacoParser!!!"
+                );
+            Console.WriteLine
+                (
+                "{0,37}",
+                "Brought to you by TrueCoders.\n"
+                );
+            Console.WriteLine("\t" + divider + "\n");
+            logger.LogInfo("Log initialized\n");
+            #endregion
+
             var lines = File.ReadAllLines(csvPath);
 
-            logger.LogInfo($"Lines: {lines[0]}");
-
+            logger.LogInfo($"Line count: {lines.Count()}\n");
+            
             var parser = new TacoParser();
 
             var locations = lines.Select(parser.Parse).ToArray();
@@ -33,16 +48,33 @@ namespace LoggingKata
             {
                 GeoCoordinate corA = new GeoCoordinate();
                 GeoCoordinate corB = new GeoCoordinate();
-                corA.Latitude = origin.Location.Latitude;
-                corA.Longitude = origin.Location.Longitude;
-            
+                
+                try
+                {
+                    corA.Latitude = origin.Location.Latitude;
+                }
+                catch (NullReferenceException err)
+                {
+                    logger.LogFatal("Fatal Error", err);
+                    
+                }
+
+                try
+                {
+                    corA.Longitude = origin.Location.Latitude;
+                }
+                catch (NullReferenceException err)
+                {
+                    logger.LogFatal("Fatal Error", err);
+                }
+
                 foreach (var destination in locations)
                 {
                     corB.Latitude = destination.Location.Latitude;
                     corB.Longitude = destination.Location.Longitude;
 
                     double distanceBetween = corA.GetDistanceTo(corB);
-                    
+
                     if (distanceBetween > distance)
                     {
                         distance = distanceBetween;
@@ -51,9 +83,20 @@ namespace LoggingKata
                     }
                 }
             }
-            Console.WriteLine(storeA.Name);
-            Console.WriteLine(storeB.Name);
-        
-        
+            
+            logger.LogInfo("Parsing complete");
+            Console.WriteLine();
+
+            #region Results
+            Console.WriteLine("{0, 15}",
+                "Results"
+                );
+            Console.WriteLine(divider);
+            Console.WriteLine($"Store A:{storeA.Name}\nLatitude: {storeA.Location.Latitude}\nLongitude: {storeA.Location.Longitude}");
+            Console.WriteLine();
+            Console.WriteLine($"Store B:{storeB.Name}\nLatitude: {storeB.Location.Latitude}\nLongitude: {storeB.Location.Longitude}");
+            Console.WriteLine($"Distance between: {distance * milePerMeter}miles");
+            #endregion
+        }
     }
-}}
+}

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace LoggingKata
@@ -12,45 +13,54 @@ namespace LoggingKata
 
         public ITrackable Parse(string line)
         {
+            
             logger.LogInfo("Begin parsing");
+            logger.LogInfo(line + "\n");
 
-            // Take your line and use line.Split(',') to split it up into an array of strings, separated by the char ','
             var cells = line.Split(',');
 
-            // If your array's Length is less than 3, something went wrong
+            #region Error check: Line check
+
             if (cells.Length < 3)
             {
-                logger.LogError("Something went wrong....");// Log error message and return null
+                logger.LogError("Error: Missing required data.");
                 return null;
             }
 
-            // TODO: Grab the latitude from your array at index 0
-            // You're going to need to parse your string as a `double`
-            // which is similar to parsing a string as an `int`
+            #endregion
+
             var isLatitude = double.TryParse(cells[0], out double latitude);
+            #region Error check: latitude formatting
 
-            // TODO: Grab the longitude from your array at index 1
-            // You're going to need to parse your string as a `double`
-            // which is similar to parsing a string as an `int`
+            if (!isLatitude)
+            {
+                logger.LogError("Error: Incorrect formatting of latitude");
+                return null;
+            }
+
+            #endregion
+
             var isLongitude = double.TryParse(cells[1], out double longitude);
+            #region Error check: longitude formatting
+            if (!isLongitude)
 
-            // TODO: Grab the name from your array at index 2
+            {
+                logger.LogError("Error: Incorrect formatting of latitude");
+                return null;
+            }
+
+            #endregion
+
             string name = cells[2];
 
-            // TODO: Create an instance of the Point Struct
-            // TODO: Set the values of the point correctly (Latitude and Longitude) 
             var coordinates = new Point();
             coordinates.Latitude = latitude;
             coordinates.Longitude = longitude;
 
-            // TODO: Create an instance of the TacoBell class
-            // TODO: Set the values of the class correctly (Name and Location)
             TacoBell tacoBell = new();
             tacoBell.Name = name;
             tacoBell.Location = coordinates;
 
-            // TODO: Then, return the instance of your TacoBell class,
-            // since it conforms to ITrackable
             return tacoBell;
 
         }
