@@ -95,7 +95,7 @@ namespace LoggingKata
             Console.WriteLine($"Store A:{storeA.Name}\nLatitude: {storeA.Location.Latitude}\nLongitude: {storeA.Location.Longitude}");
             Console.WriteLine();
             Console.WriteLine($"Store B:{storeB.Name}\nLatitude: {storeB.Location.Latitude}\nLongitude: {storeB.Location.Longitude}");
-            Console.WriteLine($"Distance between: {distance * milePerMeter}miles");
+            Console.WriteLine($"Distance between: {distance * milePerMeter}");
             #endregion
         }
     }
