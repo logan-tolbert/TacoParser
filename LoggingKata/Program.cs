@@ -47,8 +47,8 @@ namespace LoggingKata
             foreach (var origin in locations)
             {
                 GeoCoordinate corA = new GeoCoordinate();
-                GeoCoordinate corB = new GeoCoordinate();
-                
+
+
                 try
                 {
                     corA.Latitude = origin.Location.Latitude;
@@ -56,20 +56,22 @@ namespace LoggingKata
                 catch (NullReferenceException err)
                 {
                     logger.LogFatal("Fatal Error", err);
-                    
+
                 }
 
                 try
                 {
-                    corA.Longitude = origin.Location.Latitude;
+                    corA.Longitude = origin.Location.Longitude;
                 }
                 catch (NullReferenceException err)
                 {
-                    logger.LogFatal("Fatal Error", err);
+                      logger.LogFatal("Fatal Error", err);
                 }
 
-                foreach (var destination in locations)
-                {
+                    foreach (var destination in locations)
+                    {
+                    GeoCoordinate corB = new GeoCoordinate();
+
                     corB.Latitude = destination.Location.Latitude;
                     corB.Longitude = destination.Location.Longitude;
 
@@ -95,7 +97,7 @@ namespace LoggingKata
             Console.WriteLine($"Store A:{storeA.Name}\nLatitude: {storeA.Location.Latitude}\nLongitude: {storeA.Location.Longitude}");
             Console.WriteLine();
             Console.WriteLine($"Store B:{storeB.Name}\nLatitude: {storeB.Location.Latitude}\nLongitude: {storeB.Location.Longitude}");
-            Console.WriteLine($"Distance between: {distance * milePerMeter}miles");
+            Console.WriteLine($"Distance between: {distance * milePerMeter}");
             #endregion
         }
     }

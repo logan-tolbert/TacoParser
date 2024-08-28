@@ -57,7 +57,7 @@ namespace LoggingKata
             coordinates.Latitude = latitude;
             coordinates.Longitude = longitude;
 
-            TacoBell tacoBell = new();
+            TacoBell tacoBell = new TacoBell();
             tacoBell.Name = name;
             tacoBell.Location = coordinates;
 
