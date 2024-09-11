@@ -19,26 +19,44 @@ namespace LoggingKata.Test
 
         }
 
+
         [Theory]
         [InlineData("34.073638, -84.677017, Taco Bell Acwort...", -84.677017)]
-        //Add additional inline data. Refer to your CSV file.
+        [InlineData("34.376395,-84.913185,Taco Bell Adairsvill...", -84.913185)]
+        [InlineData("33.856516,-84.023179,Taco Bell Snellvill...", -84.023179)]
+        [InlineData("30.906033,-87.79328,Taco Bell Bay Minett...", -87.79328)]
+        [InlineData("30.409891,-84.280756,Taco Bell Tallahassee...", -84.280756)]
+        [InlineData("34.026711,-84.049344,Taco Bell Suwanee...", -84.049344)]
+        [InlineData("30.506038,-84.249817,Taco Bell Tallahasse...", -84.249817)]
+        [InlineData("33.824114,-84.107251,Taco Bell Stone Mountai...", -84.107251)]
+       
         public void ShouldParseLongitude(string line, double expected)
         {
-            // TODO: Complete the test with Arrange, Act, Assert steps below.
-            //       Note: "line" string represents input data we will Parse 
-            //       to extract the Longitude.  
-            //       Each "line" from your .csv file
-            //       represents a TacoBell location
-
-            //Arrange
-
-            //Act
-
-            //Assert
+            var tacoParser = new TacoParser();
+            
+            var actual = tacoParser.Parse(line);
+            
+            Assert.Equal(expected, actual.Location.Longitude);
         }
 
 
-        //TODO: Create a test called ShouldParseLatitude
+        [Theory]
+        [InlineData("34.073638, -84.677017, Taco Bell Acwort...", 34.073638)]
+        [InlineData("34.376395,-84.913185,Taco Bell Adairsvill...", 34.376395)]
+        [InlineData("33.856516,-84.023179,Taco Bell Snellvill...", 33.856516)]
+        [InlineData("30.906033,-87.79328,Taco Bell Bay Minett...", 30.906033)]
+        [InlineData("30.409891,-84.280756,Taco Bell Tallahassee...", 30.409891)]
+        [InlineData("34.026711,-84.049344,Taco Bell Suwanee...", 34.026711)]
+        [InlineData("30.506038,-84.249817,Taco Bell Tallahasse...", 30.506038)]
+        [InlineData("33.824114,-84.107251,Taco Bell Stone Mountai...", 33.824114)]
 
+        public void ShouldParseLatitude(string line, double expected)
+        {
+            var tacoParser = new TacoParser();
+        
+            var actual = tacoParser.Parse(line);
+          
+            Assert.Equal(expected, actual.Location.Latitude);
+        }
     }
 }
